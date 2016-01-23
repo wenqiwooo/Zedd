@@ -11,12 +11,14 @@ class MusicPlayer:
 		# 2: pause
 		# 3: party
 		# 4: romantic
+		# 5: productivity
 		self.msg = 0
 		# stores index of current track playing
 		self.playIndex = 0
 		self.playList = ['01_-_Maps.ogg', '05_-_Sugar.ogg', '11_-_My_Heart_Is_Open.ogg', '14_-_Lost_Stars.ogg']
 		self.partyPlayList = ['Uptown_Funk.ogg']
 		self.romanticPlayList = ['Can_You_Feel_The_Love_Tonight.ogg']
+		self.productivityPlayList = ['10_Emerald_Waters.ogg', '06_Castles_in_the_Air.ogg', '03_Hero_Requiem_.ogg']
 		self.size = len(self.playList)
 
 	def play(self):
@@ -42,6 +44,12 @@ class MusicPlayer:
 			self.msg = 4
 			pygame.mixer.music.load(self.romanticPlayList[0])
 			thread.start_new_thread(self.__playMoodMusic, (4, ))
+			
+	def setMoodProductivity(self):
+		if self.msg != 5:
+			self.msg = 5
+			pygame.mixer.music.load(self.productivityPlayList[0])
+			thread.start_new_thread(self.__playMoodMusic, (5, ))
 
 	def stop(self):
 		self.msg = 0
