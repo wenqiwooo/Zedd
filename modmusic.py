@@ -9,17 +9,39 @@ class MusicPlayer:
 		# 0: stop
 		# 1: play
 		# 2: pause
+		# 3: party
+		# 4: romantic
 		self.msg = 0
 		# stores index of current track playing
 		self.playIndex = 0
 		self.playList = ['01_-_Maps.ogg', '05_-_Sugar.ogg', '11_-_My_Heart_Is_Open.ogg', '14_-_Lost_Stars.ogg']
+		self.partyPlayList = ['Uptown_Funk.ogg']
+		self.romanticPlayList = ['Can_You_Feel_The_Love_Tonight.ogg']
 		self.size = len(self.playList)
 
 	def play(self):
+		if self.msg > 2:
+			pygame.mixer.music.stop()
+			self.msg = 0
 		if self.msg == 0:
-			pygame.mixer.music.load(playList[self.playIndex])
-		self.msg = 1
-		thread.start_new_thread(self.__playMusic, ())
+			pygame.mixer.music.load(self.playList[self.playIndex])
+			self.msg = 1
+			thread.start_new_thread(self.__playMusic, ())
+		elif self.msg == 2:
+			self.msg = 1
+			thread.start_new_thread(self.__unpauseMusic, ())
+
+	def setMoodParty(self):
+		if self.msg != 3:
+			self.msg = 3
+			pygame.mixer.music.load(self.partyPlayList[0])
+			thread.start_new_thread(self.__playMoodMusic, (3, ))
+
+	def setMoodRomantic(self):
+		if self.msg != 4:
+			self.msg = 4
+			pygame.mixer.music.load(self.romanticPlayList[0])
+			thread.start_new_thread(self.__playMoodMusic, (4, ))
 
 	def stop(self):
 		self.msg = 0
@@ -33,7 +55,8 @@ class MusicPlayer:
 	def next(self):
 		if self.msg != 0:
 			pygame.mixer.music.stop()
-		self.playIndex = (self.playIndex++) % self.size
+		self.playIndex += 1
+		self.playIndex = self.playIndex % self.size
 		pygame.mixer.music.load(self.playList[self.playIndex])
 		self.msg = 1
 		thread.start_new_thread(self.__playMusic, ())
@@ -42,5 +65,19 @@ class MusicPlayer:
 		pygame.mixer.music.play()
 		while pygame.mixer.music.get_busy() == True:
 			if self.msg != 1:
+				break
+			continue
+
+	def __unpauseMusic(self):
+		pygame.mixer.music.unpause()
+		while pygame.mixer.music.get_busy() == True:
+			if self.msg != 1:
+				break
+			continue
+
+	def __playMoodMusic(self, identifier):
+		pygame.mixer.music.play()
+		while pygame.mixer.music.get_busy() == True:
+			if self.msg != identifier:
 				break
 			continue
