@@ -38,7 +38,13 @@ def handle(msg):
 	elif command == '/glance':
 		f = camCtlr.getPicture()
 		bot.sendPhoto(chat_id, f)
-
+	elif command == '/detect':
+                f = camCtlr.detectChange()
+                if f is None:
+                        bot.sendMessage(chat_id, 'No significant change detected...')
+                else:
+                        bot.sendPhoto(chat_id, f)
+                        
 # Initialize MusicPlayer
 mPlayer = MusicPlayer()
 
