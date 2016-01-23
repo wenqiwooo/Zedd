@@ -1,9 +1,9 @@
 import picamera
 import time
 import os
+import math, operator 
 
-from PIL import Image
-from itertools import izip 
+from PIL import Image, ImageChops
 
 class CameraController:
 	def __init__(self):
@@ -11,20 +11,20 @@ class CameraController:
 		self.havePrevPhoto = False 
 
 	def getPicture(self):
-                self.camera.capture('tmp.jpg')
+        self.camera.capture('tmp.jpg')
 		f = open('tmp.jpg', 'rb')
 		return f
 
-        def detectChange(self):
-                if not self.havePrevPhoto: 
+    def detectChange(self):
+        if not self.havePrevPhoto: 
 			self.camera.capture('img1.jpg')
-			time.sleep(10)
+			time.sleep(1)
 			self.havePrevPhoto = True 
 
 		self.camera.capture('img2.jpg')
-                percentageDiff = self.getPercentageDifference('img1.jpg', 'img2.jpg')
+        rmsDiff = self.getRmsDiff('img1.jpg', 'img2.jpg')
 
-                if percentageDiff > 10: 
+        if rmsDiff > 5000: 
 			os.remove('img1.jpg')
 			os.rename('img2.jpg', 'img1.jpg')
 			f = open('img1.jpg','rb')
@@ -32,13 +32,10 @@ class CameraController:
 		else:  
 			return None	
 
-	def getPercentageDifferenc(self, img1, img2): 
-		i1 = Image.open(img1)
-		i2 = Image.open(img2) 
+	def getRmsDiff(self, img1, img2):
+	    #Calculate the root-mean-square difference between two images
 
-		pairs = izip(i1.getdata(), i2.getdata())
-		dif = sum(abs(c1-c2) for p1,p2 in pairs for c1,c2 in zip(p1,p2))
-		print dif 
-		ncomponents = i1.size[0] * i1.size[1] * 3
-		percentageDiff = (dif / 255.0 * 100) / ncomponents
-		return percentageDiff
+	    h1 = Image.open(img1).histogram()
+	    h2 = Image.open(img2).histogram()
+
+	    return math.sqrt(reduce(operator.add, map(lambda a,b: (a-b)**2, h1, h2))/len(h1))
