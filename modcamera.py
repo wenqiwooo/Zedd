@@ -34,8 +34,7 @@ class CameraController:
 
 	def getRmsDiff(self, img1, img2):
 	    #Calculate the root-mean-square difference between two images
+	    h1 = Image.open(img1).histogram()
+	    h2 = Image.open(img2).histogram()
 
-		h1 = Image.open(img1).histogram()
-		h2 = Image.open(img2).histogram()
-
-		return math.sqrt(reduce(operator.add, map(lambda a,b: (a-b)**2, h1, h2))/len(h1))
+	    return math.sqrt(reduce(operator.add, map(lambda a,b: (a-b)**2, h1, h2))/len(h1))
