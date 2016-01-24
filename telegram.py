@@ -86,10 +86,12 @@ def handle(msg):
 			lightCtlr.setBrightness(3)
 		elif command == '/brightness4':
 			lightCtlr.setBrightness(4)
+		elif command.startswith('/ask'):
+			bot.sendMessage(chat_id, command[5:])
 
 	elif 'voice' in msg:
 		file_id = msg['voice']['file_id']
-		bot.downloadFile(file_id, 'voice.ogg')
+		bot.downloadFile(file_id, 'voice.mp3')
 		mPlayer.broadcast()
 		broadcastFlag = 0
 
