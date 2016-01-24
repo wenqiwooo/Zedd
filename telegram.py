@@ -11,6 +11,7 @@ from modlight import LightController
 from modmood import MoodController
 from modcamera import CameraController
 from modvoice import Speaker
+from wolframalpha import WolframController
 
 def handle(msg):
 	chat_id = msg['from']['id']
@@ -88,6 +89,10 @@ def handle(msg):
 			lightCtlr.setBrightness(4)
 		elif command.startswith('/ask'):
 			bot.sendMessage(chat_id, command[5:])
+			responses = wolfram.ask_question(command[5:])
+			for resp in responses:
+				bot.sendMessage(chat_id, resp)
+
 
 	elif 'voice' in msg:
 		file_id = msg['voice']['file_id']
@@ -109,6 +114,9 @@ camCtlr = CameraController()
 
 # Initialize Speaker
 speaker = Speaker()
+
+# Initialize WolframController
+wolfram = WolframController()
 
 # Telegram bot
 bot = telepot.Bot('157000180:AAGLth4tTl6T8ZgcfSXmcnDxrlmmC91RG5o')
