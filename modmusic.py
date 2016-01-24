@@ -80,7 +80,7 @@ class MusicPlayer:
 		if self.msg != 1:
 			pygame.mixer.music.stop()
 			self.msg = -1
-		pygame.mixer.music.load('voice.mp3')
+		pygame.mixer.music.load('voice.ogg')
 		pygame.mixer.music.play()
 		while pygame.mixer.music.get_busy() == True:
 			continue

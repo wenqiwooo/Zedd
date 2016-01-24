@@ -46,8 +46,8 @@ def handle(msg):
 		elif command == '/glance':
 			f = camCtlr.getPicture()
 			bot.sendPhoto(chat_id, f)
-		elif command == '/speak':
-			speaker.say('hello')
+		elif command.startswith('/announce'):
+			speaker.say(command[10:])
 			bot.sendMessage(chat_id, 'Speaking...')
 		elif command == '/broadcast':
 			bot.sendMessage(chat_id, 'Please record your broadcast message...')
@@ -91,7 +91,7 @@ def handle(msg):
 
 	elif 'voice' in msg:
 		file_id = msg['voice']['file_id']
-		bot.downloadFile(file_id, 'voice.mp3')
+		bot.downloadFile(file_id, 'voice.ogg')
 		mPlayer.broadcast()
 		broadcastFlag = 0
 
