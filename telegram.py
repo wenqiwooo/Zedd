@@ -11,7 +11,7 @@ from modlight import LightController
 from modmood import MoodController
 from modcamera import CameraController
 from modvoice import Speaker
-from wolframalpha import WolframController
+from wolfram import WolframController
 
 def handle(msg):
 	chat_id = msg['from']['id']
@@ -61,12 +61,12 @@ def handle(msg):
 		elif command == '/setBrightness':
 			lightCtlr.setBrightness(1)
 			bot.sendMessage(chat_id, 'Setting brightness of light...')
-		# elif command == '/detect':
-  #               f = camCtlr.detectChange()
-  #               if f is None:
-  #                       bot.sendMessage(chat_id, 'No significant change detected...')
-  #               else:
-  #                       bot.sendPhoto(chat_id, f)
+		elif command == '/detect':
+			f = camCtlr.detectChange()
+			if f is None:
+				bot.sendMessage(chat_id, 'No significant change detected...')
+			else:
+				bot.sendPhoto(chat_id, f)
 		elif command == '/whiteLight':
 			lightCtlr.on(0)
 			bot.sendMessage(chat_id, 'Change to white light...')
@@ -88,11 +88,10 @@ def handle(msg):
 		elif command == '/brightness4':
 			lightCtlr.setBrightness(4)
 		elif command.startswith('/ask'):
-			bot.sendMessage(chat_id, command[5:])
+			bot.sendMessage(chat_id, 'Fetching answer from the internet')
 			responses = wolfram.ask_question(command[5:])
 			for resp in responses:
 				bot.sendMessage(chat_id, resp)
-
 
 	elif 'voice' in msg:
 		file_id = msg['voice']['file_id']
@@ -119,9 +118,9 @@ speaker = Speaker()
 wolfram = WolframController()
 
 # Telegram bot
-bot = telepot.Bot('157000180:AAGLth4tTl6T8ZgcfSXmcnDxrlmmC91RG5o')
+bot = telepot.Bot('174134634:AAFTDVhCWvBFawH4H-kcWvKoWx1App_Abwg')
 bot.notifyOnMessage(handle)
 print 'Bot listening...'
 
 while 1:
-	time.sleep(5)
+	time.sleep(1000)

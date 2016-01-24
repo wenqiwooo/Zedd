@@ -14,8 +14,8 @@ class MoodController:
 		mPlayer.setMoodRomantic()
 		lightCtlr.on(1);
 		
-	def setMoodProductivity(self, lightCtlr, mPlayer):
-		mPlayer.setMoodProductivity()
+	def setMoodProductive(self, lightCtlr, mPlayer):
+		mPlayer.setMoodProductive()
 		lightCtlr.on(2)
 
 

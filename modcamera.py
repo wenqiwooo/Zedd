@@ -24,7 +24,7 @@ class CameraController:
 		self.camera.capture('img2.jpg')
 		rmsDiff = self.getRmsDiff('img1.jpg', 'img2.jpg')
 
-		if rmsDiff > 5000: 
+		if rmsDiff > 2000: 
 			os.remove('img1.jpg')
 			os.rename('img2.jpg', 'img1.jpg')
 			f = open('img1.jpg','rb')
