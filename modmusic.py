@@ -6,17 +6,20 @@ class MusicPlayer:
 	def __init__(self):
 		pygame.mixer.init()
 		# msg
+		# -1: broadcast
 		# 0: stop
 		# 1: play
 		# 2: pause
 		# 3: party
 		# 4: romantic
+		# 5: productive
 		self.msg = 0
 		# stores index of current track playing
 		self.playIndex = 0
 		self.playList = ['01_-_Maps.ogg', '05_-_Sugar.ogg', '11_-_My_Heart_Is_Open.ogg', '14_-_Lost_Stars.ogg']
 		self.partyPlayList = ['Uptown_Funk.ogg']
 		self.romanticPlayList = ['Can_You_Feel_The_Love_Tonight.ogg']
+		self.productivePlayList = ['10_Emerald_Waters.ogg', '06_Castles_in_the_Air.ogg', '03_Hero_Requiem_.ogg']
 		self.size = len(self.playList)
 
 	def play(self):
@@ -43,6 +46,12 @@ class MusicPlayer:
 			pygame.mixer.music.load(self.romanticPlayList[0])
 			thread.start_new_thread(self.__playMoodMusic, (4, ))
 
+	def setMoodProductive(self):
+		if self.msg != 5:
+			self.msg = 5
+			pygame.mixer.music.load(self.productivePlayList[0])
+			thread.start_new_thread(self.__playMoodMusic, (5, ))
+
 	def stop(self):
 		self.msg = 0
 		pygame.mixer.music.stop()
@@ -60,6 +69,15 @@ class MusicPlayer:
 		pygame.mixer.music.load(self.playList[self.playIndex])
 		self.msg = 1
 		thread.start_new_thread(self.__playMusic, ())
+
+	def broadcast(self):
+		if self.msg != 1:
+			pygame.mixer.music.stop()
+			self.msg = -1
+		pygame.mixer.music.load('voice.ogg')
+		pygame.mixer.music.play()
+		while pygame.mixer.music.get_busy() == True:
+			continue
 
 	def __playMusic(self):
 		pygame.mixer.music.play()

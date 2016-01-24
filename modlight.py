@@ -5,19 +5,29 @@ class LightController:
 
 	def __init__(self):
 		self.brightness = 50
-		ser = serial.Serial('/dev/ttyS0', 9600)
+		self.ser = serial.Serial('/dev/ttyACM1', 9600)
 
-	def on(self):
-		ser.write('')
+	def on(self, mood):
+		if mood == 0:
+			self.ser.write('a')
+		elif mood == 1:
+			self.ser.write('b')
+		elif mood == 2:
+			self.ser.write('c')
+		elif mood == 3:
+			self.ser.write('d')
+		elif mood == 4:
+			self.ser.write('e')
 
 	def off(self):
-		ser.write('')
+		self.ser.write('j')
 
-	def setBrightness(self):
-		ser.write('')
-
-	def incBrightness(self):
-		ser.write('')
-
-	def decBrightness(self):
-		ser.write('')
+	def setBrightness(self, brightness):
+		if brightness == 1:
+			self.ser.write('f')
+		elif brightness == 2:
+			self.ser.write('g')
+		elif brightness == 3:
+			self.ser.write('h')
+		elif brightness == 4:
+			self.ser.write('i')
